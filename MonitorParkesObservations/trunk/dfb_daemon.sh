@@ -9,6 +9,7 @@
 # Usage: ./dfb_daemon.sh [option]
 #   option: -h          Help
 #           -update     Force the processing on the last-modified files
+#           -multi      Perform processing over multiple computers
 #
 
 DFB_SCRIPT="/u/kho018/dfb_process.sh"
@@ -18,6 +19,7 @@ function usage()
   echo "Usage: ./dfb_daemon.sh [option]"
   echo "  -h          Help"
   echo "  -update     Force the processing on the last-modified files"
+  echo "  -multi      Perform processing over multiple computers"
 }
 
 # Use kill -0 <pid> to check if the DFB3 and DFB4 processes area still running.
@@ -42,7 +44,48 @@ function both_scripts_running()
   fi
 }
 
+function process_one_backend()
+{
+  backend_parameter=$1
+
+  while [ 1 ]
+  do
+    $DFB_SCRIPT $backend_parameter $update
+
+    sleep 2
+  done
+}
+
+function process_both_backends()
+{
+  echo "process_both_backends"
+
+  while [ 1 ]
+  do
+    $DFB_SCRIPT -dfb3 $update
+    dfb3_script_pid=$!
+
+    $DFB_SCRIPT -dfb4 $update
+    dfb4_script_pid=$!
+
+    return_value=0
+
+    while [ $return_value -ne "1" ]
+    do
+      # Poll both PIDs until they have finished.
+      both_scripts_running $dfb3_script_pid $dfb4_script_pid
+      sleep 2
+    done
+
+    update=""
+
+    sleep 2
+  done
+}
+
 force_update=0
+multi=0
+hostname=""
 
 for arg in "$@"
 do
@@ -54,6 +97,9 @@ do
     "-update")
     force_update=1
     ;;
+    "-multi")
+    multi=1
+    ;;
   esac
 done
 
@@ -62,24 +108,21 @@ if [ $force_update -eq 1 ]; then
   update="-update"
 fi
 
-while [ 1 ]
-do
-  $DFB_SCRIPT -dfb3 $update
-  dfb3_script_pid=$!
+# If using multiple computers, get the hostname of current one.
+if [ $multi -eq 1 ]; then
+  hostname=`hostname`
+fi
 
-  $DFB_SCRIPT -dfb4 $update
-  dfb4_script_pid=$!
-
-  return_value=0
-
-  while [ $return_value -ne "1" ]
-  do
-    # Poll both PIDs until they have finished.
-    both_scripts_running $dfb3_script_pid $dfb4_script_pid
-    sleep 2
-  done
-
-  update=""
-
-  sleep 2
-done
+# Determine which processing loop depending on number of computers being used.
+# If there are multiple computers available:
+#   lagavulin: DFB3
+#   jura: DFB4
+if [ $multi -eq 1 ]; then
+  if [ $hostname == "lagavulin" ]; then
+    process_one_backend -dfb3
+  elif [ $hostname == "jura" ]; then
+    process_one_backend -dfb4
+  else
+    process_both_backends
+  fi
+fi
