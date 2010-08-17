@@ -122,7 +122,8 @@ if [ $multi -eq 1 ]; then
     process_one_backend -dfb3
   elif [ $hostname == "jura" ]; then
     process_one_backend -dfb4
-  else
-    process_both_backends
   fi
+else
+  process_both_backends
+fi
 fi
