@@ -37,8 +37,8 @@ function copy_to_epping()
 
 while [ 1 -eq 1 ]
 do
-  DFB3_STATUS=`find ${DFB3_DIRECTORY} -cmin -1 | wc | awk '{if ($1 != 0) print "1"; else print "0"}'`
-  DFB4_STATUS=`find ${DFB4_DIRECTORY} -cmin -1 | wc | awk '{if ($1 != 0) print "1"; else print "0"}'`
+  DFB3_STATUS=`find ${DFB3_DIRECTORY} -cmin -2 | wc | awk '{if ($1 != 0) print "1"; else print "0"}'`
+  DFB4_STATUS=`find ${DFB4_DIRECTORY} -cmin -2 | wc | awk '{if ($1 != 0) print "1"; else print "0"}'`
   TIME=`date +'%H:%M:%S'`
 
   echo "${DFB3_STATUS},${DFB4_STATUS},${TIME}" > ~/dfb_status.txt
