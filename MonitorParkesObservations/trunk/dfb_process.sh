@@ -61,13 +61,14 @@ function resize_image()
 function fold()
 {
   file=$1 # File that will be processed and plotted.
-  echo "$backend: $file"
+  #echo "$backend: $file"
 
   filesize=`ls -la ${DIRECTORY}${file} | awk '{print $5}'`
 
-  if [ $filesize -lt $FOLD_MODE_HEADER_SIZE ]; then
-    exit
-  fi
+  #if [ $filesize -lt $FOLD_MODE_HEADER_SIZE ]; then
+    #echo "filesize: $filesize < header size: $FOLD_MODE_HEADER_SIZE"
+    #exit
+  #fi
 
   # Create stokes cylindrical plot (pav -SFT)
   pav -SFT -C -g ~/big-${backend}_fold_stokes.gif/gif ${DIRECTORY}${file}
@@ -163,10 +164,12 @@ last_file_modified=`date -r ${DIRECTORY}${last_file} +%s`
 current_time=`date +%s`
 
 FIVE_MINUTES_IN_SECONDS=300
+
 difference=$(($current_time - $last_file_modified))
 
 if [ $force_update -eq 1 ] || [ $difference -lt $FIVE_MINUTES_IN_SECONDS ]
 then
+  echo "Processing: ${last_file}"
   file_extension=${last_file: -3}
   if [ $file_extension == ".sf" ]; then
     create_search_plots $last_file 
