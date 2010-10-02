@@ -50,10 +50,12 @@ DIMENSIONS="240x180"
 #   $2 = output file
 function resize_image()
 {
-  CMD="/usr/bin/convert -crop 600x485+125+97 $1 temp.gif"
+  TEMP_FILENAME=`basename $1`
+
+  CMD="/usr/bin/convert -crop 600x485+125+97 $1 /tmp/${TEMP_FILENAME}"
   $CMD
 
-  CMD="/usr/bin/convert -resize $DIMENSIONS +repage temp.gif $2"
+  CMD="/usr/bin/convert -resize $DIMENSIONS +repage /tmp/${TEMP_FILENAME} $2"
   $CMD
 }
 
