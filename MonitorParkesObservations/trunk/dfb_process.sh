@@ -42,14 +42,18 @@ function copy_to_epping()
   $CMD 2> /dev/null
 }
 
-DIMENSIONS="300x250"
+#DIMENSIONS="300x250"
+DIMENSIONS="240x180"
 
 # Resizes image to above dimensions.
 #   $1 = input file
 #   $2 = output file
 function resize_image()
 {
-  CMD="/usr/bin/convert -resize $DIMENSIONS $1 $2"
+  CMD="/usr/bin/convert -crop 600x485+125+97 $1 temp.gif"
+  $CMD
+
+  CMD="/usr/bin/convert -resize $DIMENSIONS +repage temp.gif $2"
   $CMD
 }
 
