@@ -94,7 +94,7 @@ function fold()
   file=$1 # File that will be processed and plotted.
   #echo "$backend: $file"
 
-  filesize=`ls -la ${DIRECTORY}${file} | awk '{print $5}'`
+  #filesize=`ls -la ${DIRECTORY}${file} | awk '{print $5}'`
 
   # check DFB status to see if processing should be done
   status_file_content=`cat ~/dfb_status.txt`
@@ -116,11 +116,11 @@ function fold()
     exit
   fi
 
-  filesize=`stat -c %s ${DIRECTORY}${file}`
-  if [ $filesize -lt $FOLD_MODE_HEADER_SIZE ]; then
-    echo "filesize: $filesize < header size: $FOLD_MODE_HEADER_SIZE"
-    exit
-  fi
+  #filesize=`stat -c %s ${DIRECTORY}${file}`
+  #if [ $filesize -lt $FOLD_MODE_HEADER_SIZE ]; then
+    #echo "filesize: $filesize < header size: $FOLD_MODE_HEADER_SIZE"
+    #exit
+  #fi
 
   # pscrunch
   pam -u $TMP_DIR -e p -p ${DIRECTORY}${file} &> /dev/null
