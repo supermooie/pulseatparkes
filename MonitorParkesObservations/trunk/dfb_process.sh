@@ -285,19 +285,19 @@ else
 fi
 
 # Get the latest file in PDFB3 directory.
-last_file=`ls -lrt $DIRECTORY | tail -1 | awk '{print $9}'`
+#last_file=`ls -lrt $DIRECTORY | tail -1 | awk '{print $9}'`
+last_file=`ls -rt $DIRECTORY | tail -1`
 last_file_modified=`date -r ${DIRECTORY}${last_file} +%s`
 
 current_time=`date +%s`
-
 FIVE_MINUTES_IN_SECONDS=300
-
 difference=$(($current_time - $last_file_modified))
 
 if [ $force_update -eq 1 ] || [ $difference -lt $FIVE_MINUTES_IN_SECONDS ]
 then
   echo "Processing: ${last_file}"
   file_extension=${last_file: -3}
+
   if [ $file_extension == ".sf" ]; then
     create_search_plots $last_file 
   elif [ $file_extension == ".rf" ]; then
