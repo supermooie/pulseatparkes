@@ -6,7 +6,7 @@
 # Run from lagavulin
 
 VAP_COMMAND="/psr1/linux/bin/vap -c"
-VAP_OPTIONS="name,length,bw,freq,observer,projid,stt_time"
+VAP_OPTIONS="name,length,freq,observer,projid,stt_time"
 
 # name
 # backend
