@@ -38,6 +38,19 @@ EPPING_DIRECTORY="/var/www/vhosts/pulseatparkes.atnf.csiro.au/htdocs/dev/"
 # Temporary directory for the pre-processed archives.
 TMP_DIR="/tmp/"
 
+# Checks the latest file in the DFB directory. If it has changed, terminate
+# processing.
+function check_for_new_observation()
+{
+  old_file=$1;
+  last_file=`ls -rt $DIRECTORY | tail -1`
+
+  if [ $last_file != $old_file ]; then
+    echo "new observation - exiting"
+    exit 0
+  fi
+}
+
 # Scp argument $1 with scp details stated above.
 function copy_to_epping()
 {
@@ -125,6 +138,8 @@ function fold()
   # pscrunch
   pam -u $TMP_DIR -e p -p ${DIRECTORY}${file} &> /dev/null
 
+  check_for_new_observation $file
+
   filename_basename=`basename ${DIRECTORY}${file} .cf`
   filename_basename=`basename $filename_basename .rf`
   pscrunch_filename=${filename_basename}.p
@@ -135,6 +150,8 @@ function fold()
 
   # Move pscrunched file to tmp.p
   mv ${TMP_DIR}${pscrunch_filename} ${TMP_DIR}/tmp.p
+
+  check_for_new_observation $file
 
   # Create fscrunched file from tmp.p
   pam -e Fp -F ${TMP_DIR}tmp.p &> /dev/null &
@@ -152,6 +169,7 @@ function fold()
   while [ $return_value -ne "1" ]
   do
     # Poll both PIDs until they have finished.
+    check_for_new_observation $file
     pids_running $pam1_pid $pam2_pid $pam3_pid
     sleep 1
   done
@@ -159,6 +177,8 @@ function fold()
   #############################
   # 2. Create plots using pav
   #############################
+
+  check_for_new_observation $file
 
   pav -DFTp -C -g ~/big-${backend}_fold_stokes.gif/gif ${TMP_DIR}tmp.FTp &
   pav1_pid=$!
@@ -173,9 +193,12 @@ function fold()
   while [ $return_value -ne "1" ]
   do
     # Poll both PIDs until they have finished.
+    check_for_new_observation $file
     pids_running $pav1_pid $pav2_pid $pav3_pid
     sleep 1
   done
+
+  check_for_new_observation $file
 
   resize_image ~/big-${backend}_fold_stokes.gif ~/${backend}_fold_stokes.gif
   resize_image ~/big-${backend}_fold_time.gif ~/${backend}_fold_time.gif
@@ -194,9 +217,12 @@ function fold()
   while [ $return_value -ne "1" ]
   do
     # Poll both PIDs until they have finished.
+    check_for_new_observation $file
     pids_running $scp1_pid $scp2_pid $scp3_pid
     sleep 1
   done
+
+  check_for_new_observation $file
 
   scp ~/big-${backend}_fold_stokes.gif ${USERNAME}@${COMPUTER}:${EPPING_DIRECTORY} &> /dev/null &
   scp1_pid=$!
@@ -211,6 +237,7 @@ function fold()
   while [ $return_value -ne "1" ]
   do
     # Poll both PIDs until they have finished.
+    check_for_new_observation $file
     pids_running $scp1_pid $scp2_pid $scp3_pid
     sleep 1
   done
@@ -285,7 +312,6 @@ else
 fi
 
 # Get the latest file in PDFB3 directory.
-#last_file=`ls -lrt $DIRECTORY | tail -1 | awk '{print $9}'`
 last_file=`ls -rt $DIRECTORY | tail -1`
 last_file_modified=`date -r ${DIRECTORY}${last_file} +%s`
 
