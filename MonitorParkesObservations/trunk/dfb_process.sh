@@ -144,6 +144,11 @@ function fold()
   filename_basename=`basename $filename_basename .rf`
   pscrunch_filename=${filename_basename}.p
 
+  #if [ ! -e ${TMP_DIR}${pscrunch_filename} ]; then
+    #echo only header written - exiting
+    #exit
+  #fi
+
   #############################
   # 1 Create pre-processed files
   #############################
@@ -197,6 +202,8 @@ function fold()
     pids_running $pav1_pid $pav2_pid $pav3_pid
     sleep 1
   done
+
+  rm ${TMP_DIR}tmp.p
 
   check_for_new_observation $file
 
