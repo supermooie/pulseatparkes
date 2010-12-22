@@ -58,20 +58,33 @@ function copy_to_epping()
   $CMD 2> /dev/null
 }
 
-#DIMENSIONS="300x250"
-DIMENSIONS="240x180"
+IMAGE_DIMENSIONS="240x180"
+
+# These require different crop dimensions because the pav and searchplot
+# specify different viewports.
+FOLD_IMAGE_CROP="600x485+125+97"
+SEARCH_IMAGE_CROP="600x485+125+97"
 
 # Resizes image to above dimensions.
 #   $1 = input file
 #   $2 = output file
+#   $3 = 1: fold mode
+#        2: search mode
 function resize_image()
 {
+  if [ $3 = "1" ]
+  then
+    IMAGE_CROP=$FOLD_IMAGE_CROP
+  else
+    IMAGE_CROP=$SEARCH_IMAGE_CROP
+  fi
+
   TEMP_FILENAME=`basename $1`
 
-  CMD="/usr/bin/convert -crop 600x485+125+97 $1 /tmp/${TEMP_FILENAME}"
+  CMD="/usr/bin/convert -crop $IMAGE_CROP $1 /tmp/${TEMP_FILENAME}"
   $CMD
 
-  CMD="/usr/bin/convert -resize $DIMENSIONS +repage /tmp/${TEMP_FILENAME} $2"
+  CMD="/usr/bin/convert -resize $IMAGE_DIMENSIONS +repage /tmp/${TEMP_FILENAME} $2"
   $CMD
 }
 
@@ -207,9 +220,9 @@ function fold()
 
   check_for_new_observation $file
 
-  resize_image ~/big-${backend}_fold_stokes.gif ~/${backend}_fold_stokes.gif
-  resize_image ~/big-${backend}_fold_time.gif ~/${backend}_fold_time.gif
-  resize_image ~/big-${backend}_fold_freq.gif ~/${backend}_fold_freq.gif
+  resize_image ~/big-${backend}_fold_stokes.gif ~/${backend}_fold_stokes.gif 1
+  resize_image ~/big-${backend}_fold_time.gif ~/${backend}_fold_time.gif 1
+  resize_image ~/big-${backend}_fold_freq.gif ~/${backend}_fold_freq.gif 1
 
   scp ~/${backend}_fold_stokes.gif ${USERNAME}@${COMPUTER}:${EPPING_DIRECTORY} 2> /dev/null &
   scp1_pid=$!
@@ -271,13 +284,13 @@ function create_search_plots()
   first=`echo $second $LAST_SECONDS | awk '{print $1 - $2}'`
 
   searchplot -F -g ~/big-${backend}_search_freq.gif/gif -x $first,$second ${DIRECTORY}${file}
-  resize_image ~/big-${backend}_search_freq.gif ~/${backend}_search_freq.gif
+  resize_image ~/big-${backend}_search_freq.gif ~/${backend}_search_freq.gif 0
 
   copy_to_epping ~/${backend}_search_freq.gif
   copy_to_epping ~/big-${backend}_search_freq.gif
 
   searchplot -H -g ~/big-${backend}_search_hist.gif/gif -x $first,$second ${DIRECTORY}${file} 2> /dev/null
-  resize_image ~/big-${backend}_search_hist.gif ~/${backend}_search_hist.gif
+  resize_image ~/big-${backend}_search_hist.gif ~/${backend}_search_hist.gif 0
 
   copy_to_epping ~/${backend}_search_hist.gif
   copy_to_epping ~/big-${backend}_search_hist.gif
