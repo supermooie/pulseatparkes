@@ -54,7 +54,9 @@ function check_for_new_observation()
 # Scp argument $1 with scp details stated above.
 function copy_to_epping()
 {
-  CMD="scp $1 ${USERNAME}@${COMPUTER}:${EPPING_DIRECTORY}"
+  SUB_DIRECTORY=$2
+
+  CMD="scp $1 ${USERNAME}@${COMPUTER}:${EPPING_DIRECTORY}${SUB_DIRECTORY}"
   $CMD 2> /dev/null
 }
 
@@ -263,7 +265,7 @@ function fold()
   done
 
   /u/kho018/extract_observation_data.sh ${DIRECTORY}${file} ~/${backend}_fold.dat
-  copy_to_epping ~/${backend}_fold.dat
+  copy_to_epping ~/${backend}_fold.dat info
 }
 
 function create_search_plots()
