@@ -56,7 +56,7 @@ function copy_to_epping()
 {
   SUB_DIRECTORY=$2
 
-  CMD="scp $1 ${USERNAME}@${COMPUTER}:${EPPING_DIRECTORY}${SUB_DIRECTORY}"
+  CMD="scp -B $1 ${USERNAME}@${COMPUTER}:${EPPING_DIRECTORY}${SUB_DIRECTORY}"
   $CMD 2> /dev/null
 }
 
@@ -226,13 +226,13 @@ function fold()
   resize_image ~/big-${backend}_fold_time.gif ~/${backend}_fold_time.gif 1
   resize_image ~/big-${backend}_fold_freq.gif ~/${backend}_fold_freq.gif 1
 
-  scp ~/${backend}_fold_stokes.gif ${USERNAME}@${COMPUTER}:${EPPING_DIRECTORY} 2> /dev/null &
+  scp -B ~/${backend}_fold_stokes.gif ${USERNAME}@${COMPUTER}:${EPPING_DIRECTORY} 2> /dev/null &
   scp1_pid=$!
 
-  scp ~/${backend}_fold_time.gif ${USERNAME}@${COMPUTER}:${EPPING_DIRECTORY} 2> /dev/null &
+  scp -B ~/${backend}_fold_time.gif ${USERNAME}@${COMPUTER}:${EPPING_DIRECTORY} 2> /dev/null &
   scp2_pid=$!
 
-  scp ~/${backend}_fold_freq.gif ${USERNAME}@${COMPUTER}:${EPPING_DIRECTORY} 2> /dev/null &
+  scp -B ~/${backend}_fold_freq.gif ${USERNAME}@${COMPUTER}:${EPPING_DIRECTORY} 2> /dev/null &
   scp2_pid=$!
 
   return_value=0
@@ -246,13 +246,13 @@ function fold()
 
   check_for_new_observation $file
 
-  scp ~/big-${backend}_fold_stokes.gif ${USERNAME}@${COMPUTER}:${EPPING_DIRECTORY} &> /dev/null &
+  scp -B ~/big-${backend}_fold_stokes.gif ${USERNAME}@${COMPUTER}:${EPPING_DIRECTORY} &> /dev/null &
   scp1_pid=$!
 
-  scp ~/big-${backend}_fold_time.gif ${USERNAME}@${COMPUTER}:${EPPING_DIRECTORY} &> /dev/null &
+  scp -B ~/big-${backend}_fold_time.gif ${USERNAME}@${COMPUTER}:${EPPING_DIRECTORY} &> /dev/null &
   scp2_pid=$!
 
-  scp ~/big-${backend}_fold_freq.gif ${USERNAME}@${COMPUTER}:${EPPING_DIRECTORY} &> /dev/null &
+  scp -B ~/big-${backend}_fold_freq.gif ${USERNAME}@${COMPUTER}:${EPPING_DIRECTORY} &> /dev/null &
   scp2_pid=$!
 
   return_value=0
