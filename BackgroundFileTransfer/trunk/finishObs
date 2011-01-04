@@ -1,0 +1,74 @@
+#!/bin/tcsh
+# Script to run when observation finished
+
+set session=$2
+set obs=$3
+set date = `date | awk '{print $4}'`
+
+# Get observer
+scp pulsar@atlas:/nfs/wwwresearch/pulsar/pulseATpks/currentObserver .
+scp pulsar@atlas:/nfs/wwwresearch/pulsar/pulseATpks/session .
+set observer = `grep OBSERVER currentObserver | sed s/"OBSERVER:"/""/`
+set school = `grep SCHOOL currentObserver | sed s/"SCHOOL:"/""/`
+
+pav -DFTCp -g"out.gif/gif" $1
+
+/usr/bin/convert -negate out.gif reverse.gif
+
+set line = `vap -n -c "name length bw nbin_obs mjd stt_date stt_lst" $1 | tail -1 | head -1`
+echo "Line = $line"
+set len = `echo $line | awk '{printf("%.1f", $3/60)}'`
+set dte = `echo $line | awk '{printf("%s", $7)}'`
+set pname = `echo $line | awk '{printf("%s", $2)}'`
+set mjd = `echo $line | awk '{printf("%.1f", $6)}'`
+echo $len
+
+cat session | head -n -1 >! newSession
+echo "PSR: $pname" >> newSession
+echo "================================" >> newSession
+scp newSession pulsar@atlas:/nfs/wwwresearch/pulsar/pulseATpks/session
+
+set period = `psrcat -c "p0" -o short -nonumber -nohead $pname`
+
+echo "Running simpleout 8"
+./simpleout 8 $1
+set newfile = `ls -rt *.dat | tail -1`
+set fn = $pname.$session.$obs.8channels.txt
+echo "File = $fn"
+mv $newfile $fn
+set outfile1 = `ls -rt *.txt | tail -1`
+
+/usr/bin/convert reverse.gif -draw "image Over 0,10 0,0 new.jpg" -border 20x20 -draw "text 200,40 'Observing group: $observer'" -draw "text 200,55 'School: $school'" -draw "text 500,40 'Pulsar: $pname'" -draw "text 500,55 'Date: $dte'" -draw "text 700,40 'MJD: $mjd'" -draw "text 700,55 'Local time: $date'" -draw "text 700,70 'Period: $period sec'" -draw "text 100,670 'Observation length: $len min'" final.gif
+
+giftopnm final.gif > final.pnm
+pnmtops -scale 0.75 final.pnm > final.ps
+
+set fname = `echo $pname.$session.$obs."gif"`
+echo "Fname = $fname"
+\cp final.gif $fname
+scp -B $fname pulsar@atlas:/nfs/wwwresearch/pulsar/pulseATpks/ 
+
+# XXX: change this when folder gets moved
+scp -B $fname pulsar@herschel:/var/www/vhosts/pulseatparkes.atnf.csiro.au/htdocs/distance/2/Profiles/
+
+# Remove gif profile if copied successfully.
+if ($? == 0) then
+  rm $fname
+endif
+
+set fname = `echo $pname.$session.$obs."ps"`
+\cp final.ps $fname
+
+scp -B $fname pulsar@atlas:/nfs/wwwresearch/pulsar/pulseATpks/
+
+# Remove postscript profile if copied successfully.
+if ($? == 0) then
+  rm $fname
+endif
+
+scp -B $outfile1 pulsar@atlas:/nfs/wwwresearch/pulsar/pulseATpks/
+
+# Remove text data (fscrunched to 8 channels) if copied successfully.
+if ($? == 0) then
+  rm $outfile1
+endif
