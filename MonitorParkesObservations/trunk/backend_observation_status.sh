@@ -31,7 +31,7 @@ EPPING_DIRECTORY="/var/www/vhosts/pulseatparkes.atnf.csiro.au/htdocs/dev/"
 # Scp argument $1 with scp details stated above.
 function copy_to_epping()
 {
-  CMD="scp $1 ${USERNAME}@${COMPUTER}:${EPPING_DIRECTORY}"
+  CMD="scp -B $1 ${USERNAME}@${COMPUTER}:${EPPING_DIRECTORY}"
   $CMD 2> /dev/null
 }
 
