@@ -298,7 +298,7 @@ function create_search_plots()
   copy_to_epping ~/big-${backend}_search_hist.gif
 
   /u/kho018/extract_search_data.sh ${DIRECTORY}${file} ~/${backend}_search.dat
-  copy_to_epping ~/${backend}_search.dat
+  copy_to_epping ~/${backend}_search.dat info
 
   exit
 }
