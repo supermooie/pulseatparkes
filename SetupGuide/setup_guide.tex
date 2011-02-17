@@ -1,0 +1,329 @@
+\documentclass{article}
+\usepackage[pdftex]{graphicx}
+\headheight 0in
+\headsep 0in
+\oddsidemargin 0in
+\evensidemargin 0in
+\textheight 9.5in
+\textwidth 6in
+
+\title{PULSE@Parkes Session Setup}
+\author{--- Jonathan Khoo}
+\date{}
+\begin{document}
+\maketitle
+
+\section{Preparation}
+\begin{enumerate}
+\item Notify receptionist that a school is is coming and what time they are expected.
+\item Collect the 4 laptops (black Dell bags), 4 monitors, and the plastic container (filled with cords, connectors, etc) from Rob Hollow's office (Room 33).
+\end{enumerate}
+
+%\includegraphics{parkes.jpg}
+
+\section{Connecting the Laptops}
+\subsection{Observing Table (inside lecture theatre)}
+The observing table is in the middle of the lecture theatre. Laptops 1 and 2, and their corresponding two monitors connected via the docking stations, are situated as below:
+
+\begin{itemize}
+
+\item Monitors
+\begin{enumerate}
+\item Power cable (black connector): monitor $\Rightarrow$ power-board. (x4)
+\end{enumerate}
+
+\item Laptop 1 and Laptop 2 (each): \\
+2x monitor cables (1x WHITE DVI, 1x BLUE VGA), 1x docking station, 1x power (adaptor) cable, 1x LAN cable (blue/pink), 1x keyboard, 1x mouse, 1x mousepad.
+\begin{enumerate}
+\item Place the laptop on top of the docking station---you should hear a click.
+\item Monitor cable (white DVI ends): docking station $\Rightarrow$ monitor. (x2)
+\item LAN cable (Laptop 1 --- blue cable, Laptop 2 --- pink cable): docking station $\Rightarrow$ theatre podium. Longer LAN cables can usually be found in the drawer under the podium.
+\item Keyboard $\Rightarrow$ docking station (USB port).
+\item Mouse $\Rightarrow$ docking station (USB port).
+\item Power cable: docking station $\Rightarrow$ power-board (found in container).
+\item Turn on laptop by pressing the power button on the docking station (which should be illuminated).
+\item Ensure monitors are set to correct outputs. I.e., if you have connected the monitor via a DVI cable, select the DVI output mode on monitor.
+\item Configure screens appropriately by right-clicking on the desktop $\Rightarrow$ "Properties" $\Rightarrow$  "Settings"
+\end{enumerate}
+
+\textbf{Note:} \\
+Laptop 1 --- blue LAN cable \\
+Laptop 2 --- pink LAN cable + VNC
+
+\end{itemize}
+
+\subsection{Data Analysis Table (outside lecture theatre)}
+The table outside the lecture theatre is where the data analysis takes place with laptops 3 and 4.
+
+\begin{itemize}
+\item Laptop 3 and Laptop 4: \\
+1x power cable, 1x mouse, 1x mousepad.
+\begin{enumerate}
+\item Power cable: laptop (back left) $\Rightarrow$ power-board.
+\item Mouse: $\Rightarrow$ laptop (USB port --- right top).
+\end{enumerate}
+
+\end{itemize}
+
+\section{Login Details for Laptops}
+Username: pulse \\
+Password: B0833+45 \\
+Domain: (local machine) \\
+
+\subsection*{Laptop 1 --- blue cable}
+\textbf{Left Screen --- showtel}
+\begin{enumerate}
+\item If VNC server for showtel has not been started:
+\begin{verbatim}
+% ssh pulsar@pavo
+pulsar@pavo's password: PULSAR_PASSWORD
+% vncserver -geometry 1915x1140
+% exit
+\end{verbatim}
+
+\item VNC Viewer: \\
+start $\Rightarrow$ All Programs $\Rightarrow$ RealVNC $\Rightarrow$ VNC Viewer 4 $\Rightarrow$ Run VNC Viewer \\
+
+%Server: dish0-pa:0 / Password: PULSAR\_VNC\_PASSWD $\Rightarrow$ OK
+Server: dish0-pa:0 / Password: d1sh\_64m $\Rightarrow$ OK
+% d1sh_64m
+
+\item If showtel has not been started:
+\begin{verbatim}
+% showtel
+\end{verbatim}
+
+\end{enumerate}
+
+\textbf{Right Screen --- TCS}
+\begin{enumerate}
+\item If VNC server for TCS has not been started:
+\begin{verbatim}
+% ssh pulsar@pavo
+pulsar@pavo's password: PULSAR_PASSWORD
+% vncserver -geometry 1915x1140
+% exit
+\end{verbatim}
+
+\item VNC Viewer: \\
+start $\Rightarrow$ All Programs $\Rightarrow$ RealVNC $\Rightarrow$ VNC Viewer 4 $\Rightarrow$ Run VNC Viewer \\
+Server: pavo:\emph{[0-9+]} / Password: PULSAR\_VNC\_PASSWD $\Rightarrow$ OK
+
+\item If TCS has not been started:
+\begin{verbatim}
+% TCS 
+\end{verbatim}
+
+\end{enumerate}
+
+\subsection*{Laptop 2 --- pink cable}
+
+\begin{enumerate}
+\item VPN Client: \\
+start $\Rightarrow$ All Programs $\Rightarrow$ Cisco Systems VPN Client $\Rightarrow$ VPN Client \\ \\
+Connection Entry: CSIRO ATNF Marsfield \\
+Host: vpn.atnf.csiro.au \\
+\\
+Group Authentication: \\
+
+%Name: Pulse at Parkes / Password: VPN\_GROUP\_PASSWD \\
+Name: Pulse at Parkes / Password: Vela \\
+% Vela
+
+%Username: pulsar / Password: VPN\_PASSWD
+Username: pulsar / Password: PSR0833-45
+% PSR0833-45
+
+\end{enumerate}
+
+
+\textbf{Left Screen --- Display the pulse-profile and the chat log}
+\begin{enumerate}
+\item Firefox $\Rightarrow$ http://outreach.atnf.csiro.au/education/pulseatparkes/student\_observer.html
+\end{enumerate}
+
+\textbf{Right Screen --- Skype and webcam}
+\begin{enumerate}
+\item Attach the webcam to the top of the monitor, facing the current observing students.
+\item Webcam $\Rightarrow$ docking station (USB Port).
+\item Left side of the screen: Run Skype. Video call (Skype account: Username: pulseatparkes-observer / Password: Vela) with astronomer (pulseatparkes-astronomer) at Parkes.
+\item Right side of the screen: display the webcam of the Dish.
+\begin{enumerate}
+\item Firefox $\Rightarrow$ \emph{http://pkswebcam01.atnf.csiro.au:8080}
+\item Video Source $\Rightarrow$ \emph{Channel : 1}
+\item Video Size $\Rightarrow$ \emph{Large}
+\end{enumerate}
+\end{enumerate}
+
+\subsection*{Laptop 3 and Laptop 4 --- Wireless Network Connection}
+\begin{enumerate}
+\item Enable wireless connection: Laptop (left - middle) wireless switch.
+\item Right click $\Rightarrow$ Wireless icon (bottom - right) $\Rightarrow$ Open Intel PROSet/Wireless
+\item Select network: $<$SSID not broadcast$>$ where its authentication method (right click $\Rightarrow$ properties) is: WPA2-Enterprise.
+\item Enter (NEXUS) username and password appropriately.
+\item Firefox $\Rightarrow$ \emph{http://pulseatparkes.atnf.csiro.au/distance}
+\end{enumerate}
+
+
+\section{Projectors}
+Touch theatre screen to turn it on.
+
+\textbf{Left Projector --- Laptop}
+\begin{enumerate}
+\item LAN Cable: Laptop (back right) $\Rightarrow$ desk/podium.
+\item Monitor Cable $\Rightarrow$ Computer VGA Port (desk/podium).
+\item Power Cable: Laptop (back left) $\Rightarrow$ Power Socket (desk/podium).
+
+\item VPN Client: \\
+start $\Rightarrow$ All Programs $\Rightarrow$ Cisco Systems VPN Client $\Rightarrow$ VPN Client \\ \\
+Connection Entry: CSIRO ATNF Marsfield \\
+Host: vpn.atnf.csiro.au \\
+\\
+Group Authentication: \\
+Name: Pulse at Parkes / Password: Vela
+% Vela
+Username: pulsar / Password: PSR0833-45
+% PSR0833-45
+
+\begin{itemize}
+\item Right-click $\Rightarrow$ \emph{Graphics Options} $\Rightarrow$ \emph{Display} $\Rightarrow$ \emph{Notebook + Monitor}
+\item Right-click $\Rightarrow$ \emph{Graphics Properties} $\Rightarrow$ \emph{Display Settings} $\Rightarrow$ \emph{Screen Resolution} $\Rightarrow$ \emph{1900x1200}
+\end{itemize}
+
+On the Theatre touch-screen:
+\begin{itemize}
+\item \emph{Video} $\Rightarrow$ \emph{Centre Projector} $\Rightarrow$ \emph{Centre VGA}
+\end{itemize}
+
+\item VNC Viewer --- TCS: \\
+start $\Rightarrow$ All Programs $\Rightarrow$ RealVNC $\Rightarrow$ VNC Viewer 4 $\Rightarrow$ Run VNC Viewer \\
+Server: [pavo$|$orion]:\emph{[0-9+]} / Password: PULSAR\_VNC\_PASSWD 
+
+\item VNC Viewer --- Showtel: \\
+start $\Rightarrow$ All Programs $\Rightarrow$ RealVNC $\Rightarrow$ VNC Viewer 4 $\Rightarrow$ Run VNC Viewer \\
+VNC Viewer $\Rightarrow$ Server: [pavo$|$orion]:\emph{[0-9+]} / Password: PULSAR\_VNC\_PASSWD 
+\end{enumerate}
+
+\begin{description}
+\item[Right Projector] --- Theatre PC
+\item \emph{Video} $\Rightarrow$ \emph{Right Projector} $\Rightarrow$ \emph{Theatre PC}
+\item \emph{Home} $\Rightarrow$ expand the target computer $\Rightarrow$ login (NEXUS domain)
+\begin{enumerate}
+\item Display the Parkes webcam in the upper section of the screen.
+\begin{itemize}
+\item Firefox $\Rightarrow$ \emph{http://pkswebcam01.atnf.csiro.au:8080}
+\item \emph{Video Source} $\Rightarrow$ \emph{Channel : 1}
+\item \emph{Video Size} $\Rightarrow$ \emph{Large}
+\end{itemize}
+\item Display pulse-profile and chat on the lower section of the screen.
+\begin{itemize}
+\item Firefox $\Rightarrow$ \emph{http://outreach.atnf.csiro.au/education/pulseatparkes/student\_observer.html}
+\end{itemize}
+
+
+\end{enumerate}
+
+\end{description}
+Shutting down:
+\begin{itemize}
+\item \emph{Video} $\Rightarrow$ \emph{Centre Projector} $\Rightarrow$ \emph{Power off}
+\item \emph{Video} $\Rightarrow$ \emph{Right Projector} $\Rightarrow$ \emph{Power off}
+\end{itemize}
+
+\section{Astronomer @ Parkes}
+\begin{enumerate}
+\item Open chat window as astronomer.
+\begin{itemize}
+\item Firefox $\Rightarrow$ \emph{http://outreach.atnf.csiro.au/education/pulseatparkes/astronomer\_login.html}
+\end{itemize}
+\end{enumerate}
+
+%\section{Computers One (Left side)}
+\section{Miscellaneous}
+\subsection*{Adding a new school}
+\begin{enumerate}
+\item Open \emph{/nfs/wwwresearch/pulsar/pulseATpks/session}
+\item Retaining the file's format, append: \\
+\\
+ID: XXXX \\
+DATE: DD$-$MMM$-$08
+================================ \\
+\end{enumerate}
+
+\subsection*{Clearing the chat log}
+In the (usual) case of spam, the chat log for the student\_observer.html page must be cleared.
+\begin{verbatim}
+% ssh pulsar@atlas
+pulsar@atlas's password: PULSAR_PASSWD
+% cd /export/www/vhosts/outreach/htdocs/education/pulseatparkes
+% mv session_1.log [filename]
+% touch session_1.log
+% exit
+\end{verbatim}
+
+\subsection*{Starting background script on Lagavulin}
+\begin{verbatim}
+% ssh pulsar@lagavulin
+pulsar@lagavulin's password: PULSAR_PASSWD
+% cd /psr1/pulseATpks
+% ./pap.csh [school number]
+\end{verbatim}
+
+
+\subsection*{Printouts}
+For each pulsar observation, these files are produced and transferred to \emph{/nfs/wwwresearch/pulsar/pulseATpks/}: \\
+\\
+JXXXX$[-|+]$XXXX.[\emph{Group ID}].[\emph{Observation Number}].4channels.txt \\
+JXXXX$[-|+]$XXXX.[\emph{Group ID}].[\emph{Observation Number}].8channels.txt \\
+JXXXX$[-|+]$XXXX.[\emph{Group ID}].[\emph{Observation Number}].gif \\
+JXXXX$[-|+]$XXXX.[\emph{Group ID}].[\emph{Observation Number}].ps \\
+\\
+Printouts of the pulse-profiles are given to each student. This command will print the pulse-profile to the printer located in room 82 : \\
+\\
+lpr -PEPPI-B1LG-82-HP4200 JXXXX$[-|+]$XXXX.\emph{[Group ID]}.\emph{[Observation Number]}.ps
+
+
+\subsection*{Skype Accounts}
+Two Skype accounts are used for the video-link between the observing students and the astronomer at Parkes:
+\begin{itemize}
+\item pulseatparkes-astronomer / Vela
+\item pulseatparkes-observer / Vela
+\end{itemize}
+
+\subsection*{Theatre Lights}
+The controls for the lights is located at the entrance closest to reception. Slide the bars up/down to the desired level.
+
+\subsection*{Troubleshooting}
+\subsubsection*{Background script not running}
+
+Symptom: no ticks are appearing next to pulsars in the Student Data Archive. If (for whatever reason) the P@P background script has not been running during the P@P session, these steps should be followed to ensure the P@P data gets processed and copied to Epping so that the students can use the P@P modules with their data.
+
+\begin{enumerate}
+\item Determine school identifier - go to the Student Data Archive and note the current number.
+\item Determine P@P observations.
+\begin{verbatim}
+$ hostname
+lagavulin
+$ ls -lrt /nfs/PKCCC3\_1/*.rf
+\end{verbatim}
+
+Make a note of which files have been observed during the P@P session (by time).
+
+\item Check for multiple observations of the same pulsar.
+\begin{verbatim}
+\$ vap -c name <list of P@P pulsars>
+\end{verbatim}
+
+\item Run finishObs (script to process the data and transform it into the format required for the P@P modules).
+\end{enumerate}
+
+\begin{verbatim}
+$ cd /psr1/pulseATpks
+$ ./finishObs <filename> <session identifier> <observation number>
+\end{verbatim}
+E.g. if /nfs/PKCCC3\_1/s123456\_789012.rf is the 2nd observation of pulsar J1234-5678, observed by school 21, then the finishObs command is:
+\begin{verbatim}
+$ ./finishObs /nfs/PKCCC3\_1/s123456\_789012.rf 21 2
+\end{verbatim}
+
+\end{document}
